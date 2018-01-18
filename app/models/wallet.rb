@@ -4,6 +4,8 @@ class Wallet < ApplicationRecord
 
   after_create :create_balance
 
+  validates_presence_of :name
+
   def create_balance
     self.balance = Balance.new
   end

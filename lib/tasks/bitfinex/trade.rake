@@ -5,7 +5,7 @@ TRADING_PAIRS = ['USD', 'BTC', 'ETH']
 namespace :bitfinex do
   desc 'bitfinex related tasks'
   namespace :trades do
-    desc 'load balances'
+    desc 'load trades'
     task load: [:environment] do
       client = Bitfinex::Client.new
       Wallet.all.select {|x| x.wallet_type == 'exchange'}.each do |currency|
@@ -38,6 +38,22 @@ namespace :bitfinex do
         end
       end
       puts 'Total Executed Orders added: ' + Order.all.count.to_s
+    end
+    desc 'show trades'
+    task show: [:environment] do 
+      Wallet.all.select {|x| x.wallet_type == 'exchange'}.each do |currency|
+        puts "Currency: " + currency.name.upcase
+        currency.balance.orders.group_by(&:order_type).each do |k, o|
+          puts ' - ' + k
+          o.group_by(&:pair).each do |p,orders|
+            puts ' -- ' + p
+            orders.each do |order|
+              date = DateTime.strptime(order.timestamp,'%s')
+              puts ' --- ' + date.strftime("%F %T") + ' ' + order.amount.to_s + ' @ ' + order.price.to_s + ' ' + p.last(3)
+            end
+          end
+        end
+      end
     end
   end
 end
