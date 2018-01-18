@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  amount: MyString
+  exchange_id: 1
+  average_buy_price_btc: MyString
+  average_sell_price_btc: MyString
+
+two:
+  name: MyString
+  amount: MyString
+  exchange_id: 1
+  average_buy_price_btc: MyString
+  average_sell_price_btc: MyString

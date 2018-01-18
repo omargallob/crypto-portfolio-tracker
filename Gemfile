@@ -5,6 +5,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'dotenv'
+gem 'dotenv-rails', groups: [:development, :test, :production], require: 'dotenv/rails-now'
+gem 'hashie'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
@@ -33,9 +36,8 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
 gem 'bitfinex-rb'
-gem 'dotenv-rails', groups: [:development, :test]
+
 
 
 group :development, :test do

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  currency: one
+  amount: 1.5
+  avg_buy_price_in_btc: 1.5
+  avg_sell_price_in_btc: 1.5
+
+two:
+  currency: two
+  amount: 1.5
+  avg_buy_price_in_btc: 1.5
+  avg_sell_price_in_btc: 1.5

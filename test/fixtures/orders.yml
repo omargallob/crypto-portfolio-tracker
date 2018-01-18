@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  balance: one
+  amount: 1.5
+  price_in_btc: 1.5
+  price_in_usd: 1.5
+  time_of_execution: 2018-01-18 19:26:56
+  pair: MyString
+  fee_currency: MyString
+  fee_amount: 1.5
+  order_type: MyString
+  eurusd_exchange_rate: MyString
+
+two:
+  balance: two
+  amount: 1.5
+  price_in_btc: 1.5
+  price_in_usd: 1.5
+  time_of_execution: 2018-01-18 19:26:56
+  pair: MyString
+  fee_currency: MyString
+  fee_amount: 1.5
+  order_type: MyString
+  eurusd_exchange_rate: MyString
