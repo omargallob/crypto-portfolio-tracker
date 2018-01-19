@@ -1,24 +1,30 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Exchanges
 
-Things you may want to cover:
+Currently its only working with BITFINEX
 
-* Ruby version
+## Getting started
 
-* System dependencies
+- Create API Keys on [Bitfinex](https://www.bitfinex.com/api) UI
+- Copy .env.sample to .env and insert your credentials created in the previous step
 
-* Configuration
+## Starting Rails App (api only) 
+- install rvm with stable ruby `\curl -sSL https://get.rvm.io | bash -s stable --ruby`
+- install bundler `gem install bundler`
+- install all gems and dependencies `bundle install`
+- start rails `rails s`
 
-* Database creation
+## runnning rake tasks
 
-* Database initialization
+1. task to import wallets 
 
-* How to run the test suite
+    `rake bitfinex:wallets:create`
 
-* Services (job queues, cache servers, search engines, etc.)
+2. task to import trades 
 
-* Deployment instructions
+    `rake bitfinex:trades:load`
 
-* ...
+3. task to import movements 
+
+    `rake bitfinex:movements:load`
