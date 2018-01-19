@@ -8,6 +8,7 @@ end
 gem 'dotenv'
 gem 'dotenv-rails', groups: [:development, :test, :production], require: 'dotenv/rails-now'
 gem 'hashie'
+gem 'colorize'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'

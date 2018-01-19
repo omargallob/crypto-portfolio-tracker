@@ -33,7 +33,7 @@ namespace :bitfinex do
       types.each do |t|
         puts t.upcase
         client.balances.select { |hash| hash["type"] == t && hash["amount"] != '0.0' }.map do |x|
-          wallet = Wallet.where(type_account: x['type'], name: x['currency']).first
+          wallet = Wallet.where(wallet_type: x['type'], name: x['currency']).first
           puts 'updated: '+ x['currency']
           wallet.update_attributes( available: x["amount"], amount: x["available"])
         end
