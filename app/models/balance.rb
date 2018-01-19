@@ -2,8 +2,13 @@ class Balance < ApplicationRecord
   include ActionView::Helpers::NumberHelper
 
   belongs_to :wallet
+  has_many :txes
+ 
   has_many :orders
   has_many :movements
+
+  delegate :trades, :movements, to: :txes
+
 
   def calculate_avg(total_buy_price, total_shares)
     number_with_precision((total_buy_price/total_shares), precision: 8)
