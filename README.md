@@ -10,12 +10,12 @@ Currently its only working with BITFINEX
 - Copy .env.sample to .env and insert your credentials created in the previous step
 
 ## Starting Rails App (api only) 
-- install rvm with stable ruby `\curl -sSL https://get.rvm.io | bash -s stable --ruby`
-- install bundler `gem install bundler`
+- install **rvm** with stable ruby `\curl -sSL https://get.rvm.io | bash -s stable --ruby`
+- install **bundler** `gem install bundler`
 - install all gems and dependencies `bundle install`
 - start rails `rails s`
 
-## runnning rake tasks
+## Runnning rake tasks
 
 1. task to import wallets 
 
@@ -28,3 +28,8 @@ Currently its only working with BITFINEX
 3. task to import movements 
 
     `rake bitfinex:movements:load`
+
+## Todo / Pending
+
+- orders and movements should inherit from a common model (tx) so we can track amount of crypto in current wallet
+
