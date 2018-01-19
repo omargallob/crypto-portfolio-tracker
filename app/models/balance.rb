@@ -4,8 +4,8 @@ class Balance < ApplicationRecord
   belongs_to :wallet
   has_many :txes
  
-  has_many :orders
-  has_many :movements
+  # has_many :orders
+  # has_many :movements
 
   delegate :trades, :movements, to: :txes
 

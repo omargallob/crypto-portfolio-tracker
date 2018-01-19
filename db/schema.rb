@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180119151943) do
+ActiveRecord::Schema.define(version: 20180119155558) do
 
   create_table "balances", force: :cascade do |t|
     t.integer "wallet_id"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20180119151943) do
     t.string "method"
     t.string "order_type"
     t.string "movement_type"
+    t.string "remote_id"
     t.index ["balance_id"], name: "index_txes_on_balance_id"
   end
 
