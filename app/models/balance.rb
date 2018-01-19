@@ -9,7 +9,6 @@ class Balance < ApplicationRecord
 
   delegate :trades, :movements, to: :txes
 
-
   def calculate_avg(total_buy_price, total_shares)
     number_with_precision((total_buy_price/total_shares), precision: 8)
   end
