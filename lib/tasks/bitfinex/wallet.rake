@@ -55,7 +55,10 @@ namespace :bitfinex do
       wallets.each do |k,v|
         puts k.upcase
         v.each do |wallet|
-          puts wallet.name + ': '+ wallet.amount + "#{ wallet.is_penny_coin ? ' ShitCoin' : '' }"
+          puts wallet.name.upcase
+          puts ' |- Amount: ' + wallet.amount.to_s
+          puts ' |- Avg Buy Price: ' + wallet.balance.avg_buy_price_per_unit.to_s if wallet.balance.avg_buy_price_per_unit != nil
+          puts ' |- Avg Sell Price: ' + wallet.balance.avg_sell_price_per_unit.to_s if wallet.balance.avg_sell_price_per_unit != nil
         end
       end
     end
