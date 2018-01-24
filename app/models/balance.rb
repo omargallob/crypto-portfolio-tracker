@@ -17,7 +17,7 @@ class Balance < ApplicationRecord
   def self.invalidate_order_ids(order_ids)
     order_ids.each do |id|
       order = Trade.find_by_id(id)
-      order.update_attribute(:invalidated, true)
+      order.update_attribute(:invalidated, 1)
       
     end
     puts " |- invalidated order_ids: " + order_ids.join(",")

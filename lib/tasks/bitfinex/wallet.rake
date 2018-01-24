@@ -5,11 +5,11 @@ namespace :bitfinex do
   namespace :wallet do
     desc 'list each (crypto)currency'
     task list: [:environment] do
-      SHITCOIN_LIST = ['BAT','FUN','GNT','IOT','LTC','MNA','SPK','TNB','XRP']
+      SHITCOIN_LIST = ['BAT','FUN','GNT','IOT','MNA','SPK','TNB','XRP']
       wallets = []
       Wallet.all.each do |w|
         if SHITCOIN_LIST.include? w.name.upcase
-          w.update_attribute(:is_penny_coin, true)
+          w.update_attribute(:is_penny_coin, 1)
         end
       end
     end
@@ -55,7 +55,7 @@ namespace :bitfinex do
       wallets.each do |k,v|
         puts k.upcase
         v.each do |wallet|
-          puts wallet.name + ': '+ wallet.amount
+          puts wallet.name + ': '+ wallet.amount + "#{ wallet.is_penny_coin ? ' ShitCoin' : '' }"
         end
       end
     end
