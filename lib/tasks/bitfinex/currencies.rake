@@ -10,10 +10,9 @@ namespace :bitfinex do
       types = client.balances.select { |hash| hash["amount"] != '0.0'}.map {|hash| hash['type']}.uniq      
       types.each do |t|
         puts t.upcase
-        client.balances.select { |hash| hash["type"] == t && hash["amount"] != '0.0' }.map do |x|          
-          # puts name: x["currency"].upcase + ": amount:" +  x["amount"] + " | available: " + x["available"]          
+        client.balances.select { |hash| hash["type"] == t && hash["amount"] != '0.0' }.map do |x|                             
           Wallet.create(
-            type_account: t,
+            wallet_type: t,
             name: x['currency'],
             amount: x["amount"],
             available: x["available"] 
@@ -27,8 +26,8 @@ namespace :bitfinex do
       types = client.balances.select { |hash| hash["amount"] != '0.0'}.map {|hash| hash['type']}.uniq
       types.each do |t|
         puts t.upcase
-        client.balances.select { |hash| hash["type"] == t && hash["amount"] != '0.0' }.map do |x|          
-          currCurrency = Currency.where(type_account: x['type'], name: x['currency']).first
+        client.balances.select { |hash| hash["wallet_type"] == t && hash["amount"] != '0.0' }.map do |x|          
+          currCurrency = Wallet.where(wallet_type: x['type'], name: x['currency']).first
           currCurrency.update_attributes( available: x["amount"], amount: x["available"])
         end
       end

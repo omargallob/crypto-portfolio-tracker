@@ -5,7 +5,7 @@ RSpec.describe Balance, type: :model do
   # ensure Todo model has a 1:m relationship with the Item model
   it { should belong_to(:wallet) }
 
-  it { should have_many(:orders) }
+  it { should have_many(:txes) }
   # Validation tests
   # ensure columns title and created_by are present before saving
   

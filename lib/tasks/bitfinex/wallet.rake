@@ -3,6 +3,16 @@ require 'dotenv/tasks'
 namespace :bitfinex do
   desc 'bitfinex::wallet related tasks'
   namespace :wallet do
+    desc 'list each (crypto)currency'
+    task list: [:environment] do
+      SHITCOIN_LIST = ['BAT','FUN','GNT','IOT','LTC','MNA','SPK','TNB','XRP']
+      wallets = []
+      Wallet.all.each do |w|
+        if SHITCOIN_LIST.include? w.name.upcase
+          w.update_attribute(:is_penny_coin, true)
+        end
+      end
+    end
     desc 'create wallets for each (crypto)currency'
     task create: [:environment] do
       exchange = Exchange.first

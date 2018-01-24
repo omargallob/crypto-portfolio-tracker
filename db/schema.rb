@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180119155558) do
+ActiveRecord::Schema.define(version: 20180122183416) do
 
   create_table "balances", force: :cascade do |t|
     t.integer "wallet_id"
@@ -28,41 +28,6 @@ ActiveRecord::Schema.define(version: 20180119155558) do
     t.string "nickname"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "movements", force: :cascade do |t|
-    t.integer "balance_id"
-    t.string "movement_type"
-    t.string "timestamp"
-    t.string "fee"
-    t.string "timestamp_created"
-    t.string "txid"
-    t.string "description"
-    t.string "status"
-    t.string "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "currency"
-    t.string "method"
-    t.string "amount"
-    t.index ["balance_id"], name: "index_movements_on_balance_id"
-  end
-
-  create_table "orders", force: :cascade do |t|
-    t.integer "balance_id"
-    t.string "tid"
-    t.string "order_id"
-    t.float "amount"
-    t.float "price"
-    t.float "price_in_usd"
-    t.string "timestamp"
-    t.string "pair"
-    t.string "fee_currency"
-    t.float "fee_amount"
-    t.string "order_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["balance_id"], name: "index_orders_on_balance_id"
   end
 
   create_table "txes", force: :cascade do |t|
@@ -90,6 +55,8 @@ ActiveRecord::Schema.define(version: 20180119155558) do
     t.string "order_type"
     t.string "movement_type"
     t.string "remote_id"
+    t.boolean "invalidated"
+    t.string "value_in_btc_at_time_of_movement"
     t.index ["balance_id"], name: "index_txes_on_balance_id"
   end
 
@@ -102,6 +69,8 @@ ActiveRecord::Schema.define(version: 20180119155558) do
     t.string "wallet_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "avg_cost_per_unit"
+    t.boolean "is_penny_coin"
     t.index ["exchange_id"], name: "index_wallets_on_exchange_id"
   end
 

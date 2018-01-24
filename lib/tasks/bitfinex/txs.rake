@@ -6,8 +6,9 @@ desc 'bitfinex related tasks'
 namespace :bitfinex do
   desc 'txs related tasks'
   namespace :txs do
-    desc 'load tx::trades'
+    desc 'tx::trades related tasks'
     namespace :trades do
+      desc 'import trades'
       task load: [:environment] do
         client = Bitfinex::Client.new
         Wallet.all.select {|x| x.wallet_type == 'exchange'}.each do |currency|
@@ -39,7 +40,7 @@ namespace :bitfinex do
             sleep(10)
           end
         end
-        puts 'Total Executed Orders added: ' + Order.all.count.to_s
+        puts 'Total Executed Orders added: ' + Trade.all.count.to_s
       end
       desc 'calculate amount'
       task calculate: [:environment] do
@@ -50,7 +51,8 @@ namespace :bitfinex do
           total_movements = 0
           total_movement_fees = 0
           order_ids = []
-          currency.balance.txes.sort_by {|x| DateTime.strptime(x.timestamp, '%s')}.each do |order|          
+          currency.balance.txes.sort_by {|x| DateTime.strptime(x.timestamp, '%s')}.each do |order|
+            order_ids << order.id
             if order.type == "Trade"
               row = " |- #{order.order_type} - #{order.amount.to_s} #{order.pair.first(3)} @ #{order.price.to_s} #{order.pair.last(3)}"
               if order.order_type == "Sell"
@@ -70,9 +72,14 @@ namespace :bitfinex do
                 total_movements += order.amount.to_f
               end
             end
-
+            if currency.is_penny_coin && total_number_tokens < 1 && total_number_tokens > -1 #its nor 
+              puts " |- Total amount: #{total_number_tokens} ~ 0"
+              #have to invalidate following order_ids
+              Balance.invalidate_order_ids(order_ids)              
+              order_ids = []
+            end
             # if total_number_tokens < 1
-            #   puts " |- Total amount: #{total_number_tokens}"
+            
             # end
             total_fees += order.fee_amount.to_f
           end
@@ -115,7 +122,9 @@ namespace :bitfinex do
         end
       end
     end
-    namespace :movements do 
+    desc 'tx::movement related tasks'
+    namespace :movements do
+      desc 'import movements'
       task load: [:environment] do
         client = Bitfinex::Client.new
         Wallet.all.select {|x| x.wallet_type == 'exchange'}.each do |currency|
@@ -143,6 +152,12 @@ namespace :bitfinex do
         end
         puts 'Total Movements added: ' + Movement.all.count.to_s
       end
+      desc 'calculate movements value of currency at time'
+      task calculate: [:environment] do 
+        
+      end
     end
+
+
   end
 end
