@@ -16,22 +16,26 @@ namespace :bitfinex do
             unless currency.name.upcase == tp.upcase
               trading_pair = currency.name.upcase + tp.upcase
               trades = client.mytrades(trading_pair)
-              trades.each do |t|
+              if trades.count > 0
+                tp = currency.balance.trading_pairs.find_or_create_by(name: trading_pair)
+                trades.each do |t|
 
-                begin
-                  order_type = t['type']
-                  order_params = Hashie::Mash.new(t)
-                  order_params.pair = trading_pair
-                  order_params.order_type = order_type
-                  order = currency.balance.trades.create(order_params.to_h.except!("type"))
-                  puts order.inspect
-                  order.save
-                rescue =>  e
-                  # ...will cause this code to run
-                  puts t
-                  puts "Exception Class: #{ e.class.name }"
-                  puts "Exception Message: #{ e.message }"
-                  puts "Exception Backtrace: #{ e.backtrace }"
+                  begin
+                    order_type = t['type']
+                    order_params = Hashie::Mash.new(t)
+                    order_params.pair = trading_pair
+                    order_params.order_type = order_type
+                    order_params.balance_id = tp.balance_id
+                    order = tp.trades.create(order_params.to_h.except!("type"))
+                    puts order.inspect
+                    order.save!
+                  rescue =>  e
+                    # ...will cause this code to run
+                    puts t
+                    puts "Exception Class: #{ e.class.name }"
+                    puts "Exception Message: #{ e.message }"
+                    puts "Exception Backtrace: #{ e.backtrace }"
+                  end
                 end
               end
             else

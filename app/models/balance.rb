@@ -1,9 +1,12 @@
-# Balance holds the amount of tokens held
+# Balance holds the amount of tokens held, by adding all the amounts of txs for a wallet u can determine
+# amount held
+
 class Balance < ApplicationRecord
   include ActionView::Helpers::NumberHelper
 
   belongs_to :wallet
-  has_many :txes  
+  has_many :txes
+  has_many :trading_pairs, dependent: :destroy
 
   delegate :trades, :movements, :valid, to: :txes
 
@@ -54,7 +57,7 @@ class Balance < ApplicationRecord
       if self.wallet.is_penny_coin && total_number_tokens < 1 && total_number_tokens > -1 #its nor 
         puts " |- Total amount: #{total_number_tokens} ~ 0"
         #have to invalidate following order_ids
-        invalidate_order_ids(order_ids)              
+        invalidate_order_ids(order_ids)
         order_ids = []
       end
       total_fees += order.fee_amount.to_f
@@ -73,29 +76,28 @@ class Balance < ApplicationRecord
 
   def calculate_weighted_avg_cost
     puts "\nCurrency: " + self.wallet.name.upcase + ' ' + (wallet.amount.to_s)
-    self.trades.valid.group_by(&:order_type).each do |k, o|
-      puts ' - ' + k
-      o.group_by(&:pair).each do |p,orders|
-        puts ' |- ' + p
-        # average_cost_per_share = total_purchase_amount / total_number_of_shares_purchased
+    self.trading_pairs.each do |tp|
+      puts " |- #{tp.name} " if tp.trades.valid.count > 0
+      tp.trades.valid.group_by(&:order_type).each do |ot, orders|
+        puts " |-- #{ot}"
         total_purchase_amount = total_number_of_shares_purchased = 0
         orders.each do |order|
           # date = DateTime.strptime(order.timestamp,'%s')
           total_purchase_amount += (order.amount.to_f * order.price.to_f)
           total_number_of_shares_purchased += order.amount.to_f
-          puts ' |-- ' + order.amount.to_s + ' ' + p.first(3) + ' @ ' + order.price.to_s + ' ' + p.last(3)
+          puts ' |--- ' + order.amount.to_s + ' ' + tp.name.first(3) + ' @ ' + order.price.to_s + ' ' + tp.name.last(3)
         end
-        puts ' |--- Last Fee Amount: ' + orders.last.fee_amount.to_s
+        puts ' |---- Last Fee Amount: ' + orders.last.fee_amount.to_s
         tx_total = (self.wallet.amount.to_f - orders.last.fee_amount.to_f)
         is_last = self.last_few_tx_are_relevant_ignore_rest(tx_total, wallet.amount)
         avg = self.calculate_avg(total_purchase_amount,total_number_of_shares_purchased)
-        puts ' |--- Last Tx Total: ' + tx_total.to_s
-        puts ' |--- Is last Tx: ' + is_last.to_s || orders.count == 1
-        puts ' |--- Average '+ p + ' ' + k.upcase + ' price  = ' + avg.to_s
-        if(k == "Buy")          
-          self.update_attribute(:avg_buy_price_per_unit, avg)
+        puts ' |---- Last Tx Total: ' + tx_total.to_s
+        puts ' |---- Is last Tx: ' + is_last.to_s || orders.count == 1
+        puts ' |---- Average '+ tp.name + ' ' + ot.upcase + ' price  = ' + avg.to_s
+        if(ot == "Buy")          
+          tp.update_attribute(:avg_buy_price, avg)
         else
-          self.update_attribute(:avg_sell_price_per_unit, avg)
+          tp.update_attribute(:avg_sell_price, avg)
         end
       end
     end

@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180124161849) do
+ActiveRecord::Schema.define(version: 20180124182351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "balances", force: :cascade do |t|
-    t.integer "wallet_id"
+    t.bigint "wallet_id"
     t.float "amount"
     t.float "avg_buy_price_in_btc"
     t.float "avg_sell_price_in_btc"
@@ -37,8 +37,19 @@ ActiveRecord::Schema.define(version: 20180124161849) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "trading_pairs", force: :cascade do |t|
+    t.bigint "balance_id"
+    t.string "name"
+    t.string "avg_sell_price"
+    t.string "avg_buy_price"
+    t.string "breakeven_price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["balance_id"], name: "index_trading_pairs_on_balance_id"
+  end
+
   create_table "txes", force: :cascade do |t|
-    t.integer "balance_id"
+    t.bigint "balance_id"
     t.string "timestamp"
     t.string "type"
     t.string "amount"
@@ -62,13 +73,14 @@ ActiveRecord::Schema.define(version: 20180124161849) do
     t.string "order_type"
     t.string "movement_type"
     t.string "remote_id"
-    t.boolean "invalidated"
+    t.boolean "invalidated", default: false
     t.string "value_in_btc_at_time_of_movement"
+    t.integer "trading_pair_id"
     t.index ["balance_id"], name: "index_txes_on_balance_id"
   end
 
   create_table "wallets", force: :cascade do |t|
-    t.integer "exchange_id"
+    t.bigint "exchange_id"
     t.string "name"
     t.string "ticker"
     t.string "amount"
@@ -81,4 +93,6 @@ ActiveRecord::Schema.define(version: 20180124161849) do
     t.index ["exchange_id"], name: "index_wallets_on_exchange_id"
   end
 
+  add_foreign_key "balances", "wallets"
+  add_foreign_key "txes", "balances"
 end

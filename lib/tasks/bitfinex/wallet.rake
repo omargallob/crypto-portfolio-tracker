@@ -53,12 +53,22 @@ namespace :bitfinex do
     task show: [:environment] do
       wallets = Wallet.all.group_by(&:wallet_type)
       wallets.each do |k,v|
+        puts ''
         puts k.upcase
+        puts '*****************'
         v.each do |wallet|
           puts wallet.name.upcase
           puts ' |- Amount: ' + wallet.amount.to_s
-          puts ' |- Avg Buy Price: ' + wallet.balance.avg_buy_price_per_unit.to_s if wallet.balance.avg_buy_price_per_unit != nil
-          puts ' |- Avg Sell Price: ' + wallet.balance.avg_sell_price_per_unit.to_s if wallet.balance.avg_sell_price_per_unit != nil
+          puts ' |- Pairs: ' unless k.upcase == "DEPOSIT"
+          wallet.balance.trading_pairs.each do |tp|
+            if tp.avg_buy_price != nil ||  tp.avg_sell_price != nil             
+              
+              puts ' |-- ' + tp.name
+              puts ' |--- Avg Buy Price: ' + tp.avg_buy_price if tp.avg_buy_price != nil
+              puts ' |--- Avg Sell Price: ' + tp.avg_sell_price if tp.avg_sell_price != nil
+            end
+          end
+          
         end
       end
     end
