@@ -46,6 +46,7 @@ namespace :bitfinex do
         end
         puts 'Total Executed Orders added: ' + Trade.all.count.to_s
       end
+      
       desc 'invalidate old txs'
       task invalidate: [:environment] do
         Wallet.all.select {|x| x.wallet_type == 'exchange'}.each do |currency|
@@ -58,7 +59,14 @@ namespace :bitfinex do
           currency.balance.calculate_weighted_avg_cost
         end
       end
+      desc 'update latest trades'
+      task update: [:environment] do
+        Wallet.all.select {|x| x.wallet_type == 'exchange'}.each do |currency|
+          currency.balance.calculate_weighted_avg_cost
+        end
+      end
     end
+    
     desc 'tx::movement related tasks'
     namespace :movements do
       desc 'import movements'

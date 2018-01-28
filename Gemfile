@@ -73,7 +73,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Gemfile
 group :test do
   gem 'webmock'
-  gem 'factory_bot', '~> 4.0'
+  gem 'factory_bot_rails', '~> 4.0'
   gem 'shoulda'
   gem 'shoulda-matchers', '~> 3.1'
   gem 'faker'

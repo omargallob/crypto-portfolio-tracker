@@ -1,7 +1,12 @@
 require 'rails_helper'
 # Test suite for the Todo model
 RSpec.describe TradingPair, type: :model do
-  # Association test
-  # ensure Todo model has a 1:m relationship with the Item model
+
   it { should belong_to(:balance) }
+
+  it { should have_many(:trades) }
+
+  it { expect(@wallet.balance.trading_pairs.count).to eq(0) }
+  
+  
 end
