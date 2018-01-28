@@ -1,6 +1,6 @@
 class Wallet < ApplicationRecord
   belongs_to :exchange
-  has_one :balance
+  has_one :balance, dependent: :destroy
 
   after_create :create_balance
 

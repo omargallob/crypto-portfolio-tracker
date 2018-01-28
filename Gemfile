@@ -5,15 +5,18 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'pg', '~>0.18'
 gem 'dotenv'
 gem 'dotenv-rails', groups: [:development, :test, :production], require: 'dotenv/rails-now'
 gem 'hashie'
 gem 'colorize'
+gem 'rack-cors', :require => 'rack/cors'
+gem "http"
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -39,11 +42,10 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 gem 'bitfinex-rb'
 
-
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rspec-rails', '~> 3.5'
+  gem 'railroady'
 
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
@@ -70,9 +72,10 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Gemfile
 group :test do
-  gem 'factory_bot', '~> 4.0'
+  gem 'webmock'
+  gem 'factory_bot_rails', '~> 4.0'
   gem 'shoulda'
   gem 'shoulda-matchers', '~> 3.1'
   gem 'faker'
-  gem 'database_cleaner'
+  gem 'database_cleaner'  
 end

@@ -4,6 +4,8 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
+require 'support/factory_bot'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'database_cleaner'
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -55,6 +57,7 @@ RSpec.configure do |config|
   end
 
   config.infer_spec_type_from_file_location!
+  
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
