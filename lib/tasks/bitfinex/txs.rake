@@ -46,7 +46,44 @@ namespace :bitfinex do
         end
         puts 'Total Executed Orders added: ' + Trade.all.count.to_s
       end
-      
+      desc 'updated txs'
+      task update: [:environment] do
+        last_tx = Trade.all.sort {|a,b| a.timestamp <=> b.timestamp}.last
+        puts "Last Tx: "+ last_tx.timestamp
+        client = Bitfinex::Client.new
+        Wallet.all.select {|x| x.wallet_type == 'exchange'}.each do |currency|
+          TRADING_PAIRS.each do |tp|
+            unless currency.name.upcase == tp.upcase
+              trading_pair = currency.name.upcase + tp.upcase
+              trades = client.mytrades(trading_pair, timestamp: last_tx.timestamp)
+              if trades.count > 0
+                tp = currency.balance.trading_pairs.find_or_create_by(name: trading_pair)
+                trades.each do |t|
+
+                  begin
+                    order_type = t['type']
+                    order_params = Hashie::Mash.new(t)
+                    order_params.pair = trading_pair
+                    order_params.order_type = order_type
+                    order_params.balance_id = tp.balance_id
+                    order = tp.trades.create(order_params.to_h.except!("type"))
+                    puts order.inspect
+                    order.save!
+                  rescue =>  e
+                    # ...will cause this code to run
+                    puts t
+                    puts "Exception Class: #{ e.class.name }"
+                    puts "Exception Message: #{ e.message }"
+                    puts "Exception Backtrace: #{ e.backtrace }"
+                  end
+                end
+              end
+              sleep(5)
+            end
+          end
+        end
+      end
+    
       desc 'invalidate old txs'
       task invalidate: [:environment] do
         Wallet.all.select {|x| x.wallet_type == 'exchange'}.each do |currency|

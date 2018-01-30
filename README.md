@@ -29,6 +29,11 @@ Currently its only working with BITFINEX
 
     `rake bitfinex:movements:load`
 
+
+## generate uml diagrams
+
+    `rake diagram:all`
+    
 ## Todo / Pending
 
 - orders and movements should inherit from a common model (tx) so we can track amount of crypto in current wallet
