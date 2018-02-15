@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/stympy/faker.git
+  revision: 679fd508c9f41f41b6df62024d67bc2281953395
+  branch: master
+  specs:
+    faker (1.8.7)
+      i18n (>= 0.7)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -89,8 +97,6 @@ GEM
     factory_bot_rails (4.8.2)
       factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
-    faker (1.8.7)
-      i18n (>= 0.7)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     faraday-detailed_logger (1.0.0)
@@ -298,7 +304,7 @@ DEPENDENCIES
   dotenv
   dotenv-rails
   factory_bot_rails (~> 4.0)
-  faker
+  faker!
   guard
   guard-bundler
   guard-rails

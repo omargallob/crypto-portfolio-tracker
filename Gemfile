@@ -44,12 +44,11 @@ gem 'bitfinex-rb'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'rspec-rails', '~> 3.5'
-  gem 'railroady'
-
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
+  gem 'railroady'
+  gem 'rspec-rails', '~> 3.5'   
   gem 'selenium-webdriver'
 end
 
@@ -59,7 +58,6 @@ group :development do
   gem 'guard-bundler', require: false
   gem 'guard-rails', require: false
   gem 'guard-rspec', require: false
-  
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
@@ -76,6 +74,6 @@ group :test do
   gem 'factory_bot_rails', '~> 4.0'
   gem 'shoulda'
   gem 'shoulda-matchers', '~> 3.1'
-  gem 'faker'
+
   gem 'database_cleaner'  
 end

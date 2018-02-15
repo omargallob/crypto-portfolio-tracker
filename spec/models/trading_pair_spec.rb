@@ -6,7 +6,4 @@ RSpec.describe TradingPair, type: :model do
 
   it { should have_many(:trades) }
 
-  it { expect(@wallet.balance.trading_pairs.count).to eq(0) }
-  
-  
 end

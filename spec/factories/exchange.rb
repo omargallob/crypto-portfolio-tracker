@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :exchange do
-    name "Test"    
+    name { Faker::Lorem.word }
   end
 end

@@ -27,13 +27,13 @@ class Balance < ApplicationRecord
   end
 
   def invalidate_txes
-    puts "\nCurrency: " + self.wallet.name.upcase
+    puts "\nCurrency: " + wallet.name.upcase
     total_number_tokens = 0
     total_fees = 0
     total_movements = 0
     total_movement_fees = 0
     order_ids = []
-    self.txes.sort_by {|x| DateTime.strptime(x.timestamp, '%s')}.each do |order|
+    txes.sort_by {|x| DateTime.strptime(x.timestamp, '%s')}.each do |order|
       order_ids << order.id
       if order.type == "Trade"
         row = " |- #{order.order_type} - #{order.amount.to_s} #{order.pair.first(3)} @ #{order.price.to_s} #{order.pair.last(3)}"
@@ -54,7 +54,7 @@ class Balance < ApplicationRecord
           total_movements += order.amount.to_f
         end
       end
-      if self.wallet.is_penny_coin && total_number_tokens < 1 && total_number_tokens > -1 #its nor 
+      if wallet.is_penny_coin && total_number_tokens < 1 && total_number_tokens > -1 #its nor 
         puts " |- Total amount: #{total_number_tokens} ~ 0"
         #have to invalidate following order_ids
         invalidate_order_ids(order_ids)
